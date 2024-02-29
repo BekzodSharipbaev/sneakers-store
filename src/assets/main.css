@@ -1,0 +1,10 @@
+@import "./base.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: rgb(247, 254, 231);
+  color: black;
+}
