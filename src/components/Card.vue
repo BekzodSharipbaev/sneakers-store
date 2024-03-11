@@ -7,6 +7,7 @@
         class="absolute top-8 left-8"
         :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'"
         alt="Like 1"
+        @click="onClickFavorite"
       />
       <img :src="imageUrl" alt="Sneakers" />
       <p>{{ title }}</p>
@@ -28,12 +29,15 @@ x
 
 <script setup>
 defineProps({
-  imageUrl: String,
+  id: Number,
   title: String,
+  imageUrl: String,
   price: Number,
   isFavorite: Boolean,
   isAdded: Boolean,
   onClickAdd: Function,
   onClickFavorite: Function,
 });
+
+
 </script>

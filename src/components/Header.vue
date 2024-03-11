@@ -12,6 +12,7 @@
     <ul class="flex items-center gap-10">
       <li
         class="flex items-center gap-3 text-gray-500 cursor-pointer hover:text-black"
+        @click="() => emit('openDrawer')"
       >
         <img src="/cart.svg" alt="Cart" />
         <b>1205 руб.</b>
@@ -31,3 +32,7 @@
     </ul>
   </header>
 </template>
+
+<script setup>
+const emit = defineEmits(["openDrawer"]);
+</script>

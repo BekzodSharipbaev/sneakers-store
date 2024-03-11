@@ -1,7 +1,7 @@
 <template>
-  <!-- <Drawer /> -->
+  <Drawer v-if="drawerOpen" />
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
-    <Header />
+    <Header @open-drawer="openDrawer" />
     <div class="p-10">
       <div class="flex justify-between items-center">
         <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="mt-10">
-        <CardList :items="items" />
+        <CardList :items="items" @addToFavorite="addToFavorite" />
       </div>
     </div>
   </div>
@@ -37,9 +37,19 @@ import axios from "axios";
 import Header from "@/components/Header.vue";
 import CardList from "@/components/CardList.vue";
 import Drawer from "@/components/Drawer.vue";
-import { onMounted, ref, reactive, watch } from "vue";
+import { onMounted, ref, reactive, watch, provide } from "vue";
 
 const items = ref([]);
+
+const drawerOpen = ref(false);
+
+const closeDrawer = () => {
+  drawerOpen.value = false;
+};
+
+const openDrawer = () => {
+  drawerOpen.value = true;
+};
 
 const filters = reactive({
   sortBy: "title",
@@ -75,7 +85,7 @@ const fetchFavorites = async () => {
         favoriteId: favorite.id,
       };
     });
-    console.log(items.value);
+    // console.log(items.value);
   } catch (err) {
     console.log(err);
   }
@@ -109,6 +119,35 @@ const fetchItems = async () => {
 onMounted(async () => {
   await fetchItems();
   await fetchFavorites();
+});
+
+const addToFavorite = async (item) => {
+  try {
+    if (!item.isFavorite) {
+      const obj = {
+        parentId: item.id,
+      };
+      item.isFavorite = true;
+      const { data } = await axios.post(
+        "https://1ca4ffd92060745f.mokky.dev/favorites",
+        obj
+      );
+      item.favoriteId = data.id;
+    } else {
+      item.isFavorite = false;
+      await axios.delete(
+        `https://1ca4ffd92060745f.mokky.dev/favorites/${item.favoriteId}`
+      );
+      item.favoriteId = null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+provide("cartActions", {
+  closeDrawer,
+  openDrawer,
 });
 
 watch(filters, fetchItems);

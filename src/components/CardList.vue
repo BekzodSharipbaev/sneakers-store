@@ -3,11 +3,12 @@
     <Card
       v-for="item in items"
       :key="item.id"
+      :id="item.id"
       :title="item.title"
       :imageUrl="item.imageUrl"
       :price="item.price"
-      :onClickAdd="onClickAdd"
       :isFavorite="item.isFavorite"
+      :onClickFavorite="() => emit('addToFavorite', item)"
     />
   </div>
 </template>
@@ -19,7 +20,5 @@ defineProps({
   items: Array,
 });
 
-const onClickAdd = () => {
-  alert("CLICK!");
-};
+const emit = defineEmits(["addToFavorite"]);
 </script>
