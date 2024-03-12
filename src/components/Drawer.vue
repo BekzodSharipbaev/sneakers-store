@@ -7,16 +7,17 @@
       <div class="flex gap-2">
         <span>Итого:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b>12990 руб.</b>
+        <b>{{ totalPrice }} руб.</b>
       </div>
       <div class="flex gap-2">
         <span>Налог 5%:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b>900 руб.</b>
+        <b>{{ vatPrice }} руб.</b>
       </div>
     </div>
     <button
-      disabled
+      :disabled="buttonDisabled"
+      @click="() => emit('createOrder')"
       class="bg-lime-500 w-full rounded-xl py-3 text-white transition cursor-pointer disabled:bg-slate-300 hover:bg-lime-600 active:bg-lime-700"
     >
       Оформить заказ
@@ -27,4 +28,15 @@
 <script setup>
 import DrawerHead from "@/components/DrawerHead.vue";
 import CartListItem from "@/components/CartListItem.vue";
+import { computed } from "vue";
+const emit = defineEmits(["createOrder"]);
+const props = defineProps({
+  totalPrice: Number,
+  vatPrice: Number,
+  isCreatingOrder: Boolean,
+});
+
+const buttonDisabled = computed(() =>
+  props.isCreatingOrder.value ? true : props.totalPrice ? false : true
+);
 </script>
