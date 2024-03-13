@@ -1,6 +1,13 @@
-import './assets/main.css'
+import "./assets/main.css";
 
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 
-createApp(App).mount('#app')
+import App from "./App.vue";
+import router from "@/router/router.js";
+
+const app = createApp(App);
+
+app.use(router);
+app.use(autoAnimatePlugin);
+app.mount("#app");
