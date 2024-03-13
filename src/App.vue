@@ -4,7 +4,7 @@
     :total-price="totalPrice"
     :vat-price="vatPrice"
     @create-order="createOrder"
-    :cart-button-disabled="cartButtonDisabled"
+    :button-disabled="cartButtonDisabled"
   />
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
@@ -177,11 +177,6 @@ const fetchItems = async () => {
   }
 };
 
-onMounted(async () => {
-  await fetchItems();
-  await fetchFavorites();
-});
-
 const addToFavorite = async (item) => {
   try {
     if (!item.isFavorite) {
@@ -205,6 +200,18 @@ const addToFavorite = async (item) => {
     console.log(err);
   }
 };
+
+onMounted(async () => {
+  await fetchItems();
+  await fetchFavorites();
+});
+
+watch(cart, () => {
+  items.value = items.value.map((item) => ({
+    ...item,
+    isAdded: false,
+  }));
+});
 
 provide("cart", {
   cart,
