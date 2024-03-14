@@ -1,7 +1,7 @@
 <template>
-  <h1>Мои закладки</h1>
+  <h2 class="text-3xl font-bold mb-8">Мои закладки</h2>
 
-  <CardList :items="favorites" />
+  <CardList :items="favorites" is-favorite />
 </template>
 
 <script setup>
